@@ -13,7 +13,7 @@
 <h2>Résultat</h2>
 
 <?php
-
+echo 'test';
 
  ?>
     
