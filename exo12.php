@@ -13,7 +13,17 @@
 <h2>Résultat</h2>
 
 <?php
-echo 'test';
+
+$tableauValeurs=array(true,"texte",10,25.369,array("valeur1","valeur2"));
+$sous_tableau = $tableauValeurs[4];
+
+//list($a, $b, $c, $d, $e)= $tableauValeurs;
+//implode(',',$e);
+
+
+foreach($tableauValeurs as $valeur){
+   echo '<pre>' ,var_dump($valeur), '</pre>';
+}
 
  ?>
     
