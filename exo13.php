@@ -20,18 +20,17 @@ class Voiture{
     private string $marque;
     private string $modele;
     private int  $nbPortes;
-    private int $vitesseActuel = 0;
-    private int $acceleration;
-    //private string $etat;
+    private int $vitesseActuel;
+    private bool $etat;
 
 
     //constructor
-    public function __construct(string $marque, string $modele, int $nbPortes, int $vitesseActuel, int $acceleration){
+    public function __construct(string $marque, string $modele, int $nbPortes){
         $this-> marque = $marque;
         $this-> modele = $modele;
         $this-> nbPortes = $nbPortes;
-        $this-> vitesseActuel = $vitesseActuel;
-        $this-> acceleration = $acceleration;
+        $this-> vitesseActuel = 0;
+        $this-> etat = false;
     }
 
    
@@ -48,24 +47,15 @@ class Voiture{
     function set_nbPorte(string $nbPortes){
         $this-> nbPortes = $nbPortes;
     }
-   /* function set_demarrer(){
-        $this-> marque = $marque;
-        $this-> modele = $modele;
+
+    function set_etat(bool $etat){
+        $this-> etat = $etat;
     }
-
-    function set_stop($marque, $modele){
-        $this-> marque = $marque;
-        $this-> modele = $modele;
-    }*/
-
+  
     function set_vitesseActuel(int $vitesseActuel){
         $this-> vitesseActuel = $vitesseActuel;
     }
-
-    function set_acceleration(int $acceleration){
-        $this-> acceleration = $acceleration;
-    }
-  
+   
 
     //GET
 
@@ -78,62 +68,92 @@ class Voiture{
      function get_nbPorte(): int{
         return $this-> nbPortes;
      }
+     function get_etat(): int{
+        return $this-> etat;
+     }
 
-     function get_demarrer(){
-       if(!$this->vitesseActuel <= 0){
-            return "Le véhicule ".$this->marque. " ". $this->modele." démarre.<br>";
+     // VITESSE DU VEHICULE
+     function get_vitesseActuel(){
+        return  $this->vitesseActuel;
+     }
+     // ACCELERATION DU VEHICULE SI CELUI CI EST EN MARCHE OU NON
+     function accelerer(int $vitesseAccel){
+       if($this-> etat == false){
+        return "Pour accélerer, il faut démarrer le véhicule " .$this->marque. " " . $this->modele."<br>";
+       }else{
+        $this->set_vitesseActuel($this->get_vitesseActuel() + $vitesseAccel);
+        
+        return "Le véhicule accélere de ".$vitesseAccel."km/h. <br> vitesse actuel =". $this->get_vitesseActuel(). "<br>";
+       }
+     }
+    // VEHICULE DEMARRER OU NON
+     function demarrer(){
+        if($this-> etat == true){
+            return "Le vehicule ".$this->marque." ". $this->modele." démarre<br>";
         }else{
-            return "Le véhicule " .$this->marque. " est à l'arrêt.<br>";
+            return "Le véhicule ".$this->marque." ". $this->modele." est à l'arrêt.<br>";
         }
      }
 
-    /* function get_stop(){
-        return "Le véhicule " .$this->marque. " est stoppé.<br>";
-     }*/
-
-     function get_vitesseActuel(){
-        return "Le véhicule " .$this->marque." " .$this->modele. " à une vitesse actuel de  " .$this->vitesseActuel. "km/h<br>";
+    //VEHICULE A L'ARRET OU NON
+     function stoppe(){
+       if( $this-> vitesseActuel <= 0){
+        return "le véhicule ".$this->marque." ". $this->modele." est stoppé<br>";
+       }else{
+        return "le véhicule ".$this->marque." ". $this->modele." est en mouvement<br>";
+       }
      }
 
-     function get_acceleration(){
-        return "Le véhicule" .$this->marque." ".$this->modele." accélère de " .$this->acceleration. "km/h.<br>";
+  // VEHICULE RALENTI EN FONCTION DE LA VITESSE ACTUEL
+     function ralentir(int $vitesseRalentir){
+        if($this-> etat == false){
+            return "Pour ralentir, il faut démarrer le véhicule " .$this->marque. " " . $this->modele."<br>";
+           }else if($vitesseRalentir > $this-> vitesseActuel) {
+            return "Mon véhicule ".$this->marque." ". $this->modele." est à l'arrêt.<br>";
+            }else{
+                $this->set_vitesseActuel($this->get_vitesseActuel() - $vitesseRalentir);
+            return "Mon véhicule".$this->marque." ". $this->modele." ralenti de " .$vitesseRalentir. "km/h.<br> vitesse actuel =". $this->get_vitesseActuel(). "<br>";
+        }
+
+     }
+
+     function displayInfoVitesse(){
+        if($this-> vitesseActuel <= 0){
+            echo "Le véhicule est à l'arrêt.";
+        }
+        echo "La vitesse du véhicule ".$this->marque." ". $this->modele." est de " .$this->get_vitesseActuel(). "km/h<br>";
      }
 
 }
 
 $refVoiture = 'Nom et modèle du véhicule:';
-$v1 = new Voiture('Peugeot', 408, 5,50, 50);
-$v2 = new Voiture('Citroên', 'C4', 3,0, 20);
+$v1 = new Voiture('Peugeot', '408', 5);
+$v2 = new Voiture('Citroên', 'C4', 3);
 
 
 //SET VEHICULE 1
-/*
-$v1->set_marque('Peugeot');
-$v1->set_modele(408);
-$v1->set_nbPorte(5);
-$v1->set_acceleration(50);
-$v1->set_vitesseActuel(50);
+$v1->set_etat(true);
 //SET VEHICULE 2
-$v2->set_marque('Citroên');
-$v2->set_modele('C4');
-$v2->set_nbPorte(3);
-$v2->set_acceleration(20);*/
+$v2->set_etat(true);
 
 echo "<div style='display:flex;'>";
 echo "<div>";
 echo "<h3>Info voitures</h3>";
-echo $v1->get_demarrer();
-echo $v1->get_acceleration();
-echo $v2->get_demarrer();
-echo $v2->get_acceleration(20);
-echo $v1->get_vitesseActuel();
-echo $v2->get_vitesseActuel();
+echo $v1->demarrer();
+echo $v1->accelerer(50);
+echo $v1->accelerer(50);
+echo $v2->demarrer();
+echo $v2->stoppe();
+echo $v2->accelerer(20);
+echo $v1->ralentir(30);
+echo $v1->ralentir(30);
+echo $v1->ralentir(30);
+echo $v1->ralentir(10);
+echo $v2->demarrer();
 echo "<br>";
 echo "</div>";
 
-
 //echo $v2->get_stop();
-
 
 
 // INFO VEHICULE 1
@@ -142,18 +162,21 @@ echo "<h3>Infos véhicule 1</h3><br>";
 echo "<ul>";
 echo "<li>",$refVoiture,PHP_EOL, $v1->get_marque(), PHP_EOL, $v1->get_modele(),"</li>";
 echo "<li>Nombre de portes: ", $v1->get_nbPorte(),"</li>";
-echo "<li>",$v1->get_demarrer(),"</li>";
-echo "<li>",$v1->get_vitesseActuel(), "</li>";
+echo "<li>",$v1->demarrer(),"</li>";
+echo "<li>",$v1->displayInfoVitesse(), "</li>";
 echo "</ul>";
 echo "</div>";
 // INFO VEHICULE 2
+
+$v2->set_etat(false); // véhicule à l'arret
+
 echo "<div>";
 echo "<h3>Infos véhicule 2</h3><br>";
 echo "<ul>";
 echo "<li>",$refVoiture,PHP_EOL, $v2->get_marque(), PHP_EOL, $v2->get_modele(),"</li>";
 echo "<li>Nombre de portes: ", $v2->get_nbPorte(),"</li>";
-echo "<li>",$v2->get_demarrer(),"</li>";
-echo "<li>",$v2->get_vitesseActuel(), "</li>";
+echo "<li>",$v2->demarrer(),"</li>";
+echo "<li>",$v2->displayInfoVitesse(), "</li>";
 echo "</ul>";
 echo "</div>";
 echo "</div>";
