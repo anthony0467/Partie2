@@ -83,7 +83,7 @@ class Voiture{
        }else{
         $this->set_vitesseActuel($this->get_vitesseActuel() + $vitesseAccel);
         
-        return "Le véhicule accélere de ".$vitesseAccel."km/h. <br> vitesse actuel =". $this->get_vitesseActuel(). "<br>";
+        return "Le véhicule " .$this->marque. " " . $this->modele." accélere de ".$vitesseAccel."km/h. <br>";
        }
      }
     // VEHICULE DEMARRER OU NON
@@ -112,19 +112,25 @@ class Voiture{
             return "Mon véhicule ".$this->marque." ". $this->modele." est à l'arrêt.<br>";
             }else{
                 $this->set_vitesseActuel($this->get_vitesseActuel() - $vitesseRalentir);
-            return "Mon véhicule".$this->marque." ". $this->modele." ralenti de " .$vitesseRalentir. "km/h.<br> vitesse actuel =". $this->get_vitesseActuel(). "<br>";
+            return "Mon véhicule".$this->marque." ". $this->modele." ralenti de " .$vitesseRalentir. "km/h.<br>";
         }
 
      }
 
+
+// RECUPERER LA VITESSE ACTUELLE DU VEHICULE 
      function displayInfoVitesse(){
-        if($this-> vitesseActuel <= 0){
+        if($this-> vitesseActuel < 0){
             echo "Le véhicule est à l'arrêt.";
+        }else{
+            echo "La vitesse du véhicule ".$this->marque." ". $this->modele." est de " .$this->get_vitesseActuel(). "km/h<br>";
         }
-        echo "La vitesse du véhicule ".$this->marque." ". $this->modele." est de " .$this->get_vitesseActuel(). "km/h<br>";
+    
      }
 
 }
+
+
 
 $refVoiture = 'Nom et modèle du véhicule:';
 $v1 = new Voiture('Peugeot', '408', 5);
@@ -142,18 +148,17 @@ echo "<h3>Info voitures</h3>";
 echo $v1->demarrer();
 echo $v1->accelerer(50);
 echo $v1->accelerer(50);
+
 echo $v2->demarrer();
 echo $v2->stoppe();
 echo $v2->accelerer(20);
+
 echo $v1->ralentir(30);
-echo $v1->ralentir(30);
-echo $v1->ralentir(30);
-echo $v1->ralentir(10);
+echo $v1->ralentir(20);
 echo $v2->demarrer();
 echo "<br>";
 echo "</div>";
 
-//echo $v2->get_stop();
 
 
 // INFO VEHICULE 1
@@ -167,7 +172,6 @@ echo "<li>",$v1->displayInfoVitesse(), "</li>";
 echo "</ul>";
 echo "</div>";
 // INFO VEHICULE 2
-
 $v2->set_etat(false); // véhicule à l'arret
 
 echo "<div>";
